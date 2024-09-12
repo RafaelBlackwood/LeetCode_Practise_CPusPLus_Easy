@@ -1,7 +1,8 @@
 #include <iostream>
 #include <vector>
 #include <string>
-#include <algorithm> 
+#include <algorithm>
+#include <unordered_map>  
 
 
 /*
@@ -29,19 +30,26 @@ Output: [0,1]
 class Solution {
 public:
     std::vector<int> twoSum(std::vector<int>& nums, int target) {
-        std::vector<int> temp;
-
-        for(int i=0; i<nums.size(); i++){
+        //Soltion 1: Brute force:
+        /*
+        for(int i=0; i<nums.size()-1; i++){
             for(int j=i+1;j<nums.size();j++){
-                if(nums[i]+nums[j]==target){
-                temp.push_back(i);
-                temp.push_back(j);
-                break;
-                }
+                if(nums[i]+nums[j]==target)return {i, j};
             }
         }
+        */
+       //Solution 2: Hashing
+
+        std::unordered_map<int, int> numMap; 
+        for(int i=0; i<nums.size();i++){
+            int complement = target - nums[i];
+            if (numMap.find(complement) != numMap.end()) {
+                return {numMap[complement], i};
+            }
+            numMap[nums[i]] = i;
+        }
         
-        return temp;
+        return {};
     }
 };
 
